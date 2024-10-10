@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Booking</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- 1 Book TestDrive -->
+    <header class="hero">
+        <div class="hero-content">
+            <a href="{% url 'booking' %}" class="btn-book">Book TestDrive</a>
+        </div>
+    </header>
+
+    <!-- 2 -->
+    <section class="details">
+        <!-- fotos -->
+        <div class="photos-row">
+            <img src="{% static 'images/toyota1.jpg' %}" alt="Toyota Yaris Front">
+            <img src="{% static 'images/toyota2.jpg' %}" alt="Toyota Yaris Side">
+            <img src="{% static 'images/toyota3.jpg' %}" alt="Toyota Yaris Interior">
+        </div>
+
+        <!-- descriptions -->
+        <div class="car-specs">
+            <h2>Toyota Yaris Hybrid Specifications</h2>
+            <ul>
+                <li>Engine: 1.5L Hybrid</li>
+                <li>Transmission: Automatic</li>
+                <li>Fuel Economy: 55 MPG</li>
+                <li>Seating Capacity: 5</li>
+                <li>Color: Grey</li>
+            </ul>
+        </div>
+
+        <!-- Price -->
+        <div class="car-price-contact">
+            <p class="price">Price: €16,300</p>
+            <p>Contact: +353 123 4567</p>
+        </div>
+    </section>
+
+    <!--  Footer -->
+    <footer>
+        <p>&copy; 2024 Car Booking. All rights reserved.</p>
+    </footer>
+</body>
+</html>

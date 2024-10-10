@@ -1,0 +1,92 @@
+/* Base */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 1 */
+.hero {
+    background-image: url('../images/hero-image.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-content {
+    text-align: center;
+}
+
+.btn-book {
+    padding: 15px 30px;
+    background-color: red;
+    color: white;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.btn-book:hover {
+    background-color: darkred;
+}
+
+/* 2 */
+.details {
+    padding: 50px;
+    text-align: center;
+}
+
+.photos-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.photos-row img {
+    width: 30%;
+    border: 5px solid #ccc;
+    border-radius: 10px;
+}
+
+.car-specs {
+    margin-bottom: 30px;
+}
+
+.car-specs ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.car-specs li {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.car-price-contact {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 24px;
+    color: green;
+}
+
+/* 3 Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
