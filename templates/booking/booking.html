@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .login-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .calendar .day {
+            width: calc(14.28% - 10px); /* 7 днів на тиждень */
+            margin-bottom: 10px;
+            text-align: center;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .calendar .reserved {
+            background-color: #ff6961;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .calendar .editable {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .calendar .day:hover {
+            background-color: #ddd;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .modal form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .modal input {
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .modal button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background-color: #45a049;
+        }
+
+        .delete-button {
+            background-color: #ff4c4c;
+            margin-top: 10px;
+        }
+
+        .delete-button:hover {
+            background-color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Booking Calendar</h1>
+    <div class="login-section">
+        <div>
+            <label for="username">Login:</label>
+            <input type="text" id="username">
+            <label for="password">Password:</label>
+            <input type="password" id="password">
+            <button id="loginButton">Login</button>
+        </div>
+    </div>
+    <div class="calendar" id="calendar">
+        {% for day in calendar_days %}
+        <div class="day {% if day.is_reserved %}reserved{% endif %} {% if day.editable %}editable{% endif %}" data-date="{{ day.date }}" {% if day.booking_id %}data-booking-id="{{ day.booking_id }}"{% endif %}>
+            {{ day.day_number }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <h2>Edit Booking</h2>
+        <form id="bookingForm" method="POST" action="{% url 'store_booking' %}">
+            {% csrf_token %}
+            <input type="hidden" id="bookingId" name="bookingId" value="">
+            <label for="date">Date:</label>
+            <input type="text" id="date" name="date" readonly>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="surname">Surname:</label>
+            <input type="text" id="surname" name="surname" required>
+            <label for="mobile">Mobile:</label>
+            <input type="text" id="mobile" name="mobile" required>
+            <button type="submit">Save</button>
+            <button type="button" class="delete-button" id="deleteBookingButton">Delete</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    let currentBookingId = null;
+
+    function openModal(dayCell) {
+        const modal = document.getElementById('editModal');
+        const dateInput = document.getElementById('date');
+        dateInput.value = dayCell.getAttribute('data-date');
+        modal.style.display = 'block';
+        currentBookingId = dayCell.getAttribute('data-booking-id'); // Зберегти id бронювання
+        document.getElementById('bookingId').value = currentBookingId; // Встановити значення id
+        const nameInput = document.getElementById('name');
+        const surnameInput = document.getElementById('surname');
+        const mobileInput = document.getElementById('mobile');
+
+        // Задати значення для полів, якщо бронювання вже існує
+        if (currentBookingId) {
+            // Запросити дані бронювання, якщо потрібно
+            fetch(`/get_booking/${currentBookingId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    nameInput.value = data.name;
+                    surnameInput.value = data.surname;
+                    mobileInput.value = data.mobile;
+                });
+        } else {
+            nameInput.value = '';
+            surnameInput.value = '';
+            mobileInput.value = '';
+        }
+    }
+
+    // Авторизація користувача
+    document.getElementById('loginButton').onclick = function() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Тут ви можете додати логіку для авторизації
+        if (username && password) {
+            alert('Login successful!'); // Сповіщення про успішну авторизацію
+            // Додайте логіку для подальшої обробки авторизації (наприклад, збереження токена, оновлення UI тощо)
+        } else {
+            alert('Please enter valid credentials.'); // Сповіщення про невірні дані
+        }
+    };
+
+    // Видалення бронювання
+    document.getElementById('deleteBookingButton').onclick = function() {
+        if (currentBookingId) {
+            if (confirm("Are you sure you want to delete this booking?")) {
+                // Відправити запит на видалення
+                fetch(`/delete_booking/${currentBookingId}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Booking deleted successfully.");
+                        location.reload(); // Оновити сторінку
+                    } else {
+                        alert("Failed to delete booking.");
+                    }
+                });
+            }
+        }
+    };
+
+    // Закриття модального вікна
+    document.getElementById('closeModal').onclick = function() {
+        document.getElementById('editModal').style.display = 'none';
+    };
+
+    // Закриття модального вікна при натисканні поза ним
+    window.onclick = function(event) {
+        const modal = document.getElementById('editModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+
+    // Додати події на кожен день
+    document.querySelectorAll('.editable').forEach(day => {
+        day.addEventListener('click', () => openModal(day));
+    });
+</script>
+
+</body>
+</html>
