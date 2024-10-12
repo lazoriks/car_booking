@@ -36,6 +36,16 @@ body {
 .btn-book:hover {
     background-color: darkred;
 }
+.link {
+    display: inline-block;
+    margin-top: 10px; /* Відступ зверху */
+    color: blue; /* Колір тексту */
+    text-decoration: underline; /* Підкреслення тексту */
+}
+
+.link:hover {
+    color: darkblue; /* Колір при наведенні */
+}
 
 /* 2 */
 .details {

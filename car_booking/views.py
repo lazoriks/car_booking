@@ -9,42 +9,35 @@ from datetime import datetime, timedelta
 from django.http import HttpResponseNotFound
 from django.template import loader
 #from django.views.decorators.csrf import requires_csrf_token
+from django.core.mail import send_mail
+from django.conf import settings
 
 @csrf_exempt
 def custom_404(request, exception):
     template = loader.get_template('404.html')
     return HttpResponseNotFound(template.render())
 
-
-@login_required
-def booking_view(request):
+@csrf_exempt
+def booking(request):
     today = datetime.now()
     first_day_of_month = today.replace(day=1)
     last_day_of_month = (first_day_of_month + timedelta(days=31)).replace(day=1) - timedelta(days=1)
 
-    # Отримати всі бронювання у поточному місяці для цього користувача
-    bookings = Booking.objects.filter(date__range=[first_day_of_month, last_day_of_month], user=request.user)
+    # Отримуємо бронювання (якщо користувач авторизований)
+    if request.user.is_authenticated:
+        bookings = Booking.objects.filter(date__range=[first_day_of_month, last_day_of_month], user=request.user)
+    else:
+        bookings = Booking.objects.filter(date__range=[first_day_of_month, last_day_of_month])
 
-    # Створити словник, щоб зберігати резервовані дати
     reserved_dates = {booking.date.date(): booking.id for booking in bookings}
-
     calendar_days = []
 
     for day in range(1, last_day_of_month.day + 1):
         date = first_day_of_month.replace(day=day)
         is_reserved = date.date() in reserved_dates
 
-        # Логіка для доступності дат
-        if request.user.is_authenticated:
-            # Якщо користувач аутентифікований
-            if request.user.is_superuser:
-                editable = True  # Адміністратор може редагувати всі дати
-            else:
-                # Тільки для конкретного бронювання користувача
-                editable = is_reserved and (reserved_dates[date.date()] in bookings.values_list('id', flat=True))
-        else:
-            # Якщо користувач не аутентифікований
-            editable = False  # Всі дати недоступні
+        # Для неавторизованих користувачів:
+        editable = request.user.is_authenticated and (is_reserved and (reserved_dates[date.date()] in bookings.values_list('id', flat=True)))
 
         calendar_days.append({
             'day_number': day,
@@ -54,6 +47,11 @@ def booking_view(request):
             'booking_id': reserved_dates.get(date.date(), None)
         })
 
+    # Завжди повертаємо JSON для AJAX-запитів, незалежно від наявності бронювань
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse(calendar_days, safe=False)  # Завжди повертаємо JSON для AJAX-запитів
+
+        # Якщо це звичайний запит, повертаємо сторінку
     return render(request, 'booking/booking.html', {'calendar_days': calendar_days})
 
 @csrf_exempt
@@ -65,17 +63,28 @@ def store_booking(request):
         name = request.POST.get('name')
         surname = request.POST.get('surname')
         mobile = request.POST.get('mobile')
+        email = request.POST['email']
 
         if booking_id:
             booking = Booking.objects.get(id=booking_id)
             booking.name = name
             booking.surname = surname
             booking.mobile = mobile
+            booking.email = email
             booking.save()
         else:
-            Booking.objects.create(user=request.user, date=date, name=name, surname=surname, mobile=mobile)
+            Booking.objects.create(user=request.user, date=date, name=name, surname=surname, mobile=mobile, email=email)
+
+        send_booking_confirmation(email, date, "Car Information Here")
 
     return JsonResponse({'status': 'success'})
+
+def send_booking_confirmation(email, date, car_info):
+    subject = 'Booking Confirmation for Test Drive'
+    message = f'Your test drive is booked for {date}. \n\nCar Information: {car_info}'
+    from_email = settings.DEFAULT_FROM_EMAIL
+
+    send_mail(subject, message, from_email, [email])
 
 @login_required
 def get_booking(request, booking_id):
@@ -98,6 +107,3 @@ def index(request):
 
 def booking(request):
     return render(request, 'booking/booking.html')
-
-# def custom_404(request, exception):
-#    return render(request, '404.html', status=404)

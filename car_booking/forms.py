@@ -4,4 +4,4 @@ from .models import Booking
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = ['date', 'name', 'surname', 'mobile']
+        fields = ['date', 'name', 'surname', 'mobile', 'email']

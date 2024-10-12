@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'car_booking',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,13 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'cr4dwbft@students.codeinstitute.net'
+EMAIL_HOST_PASSWORD = 'ilbj zhnc tawr aobx'
+DEFAULT_FROM_EMAIL = 'lazoriksua@gmail.com'

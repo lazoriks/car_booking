@@ -15,21 +15,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
+from django.views.generic import TemplateView
+
 from . import views
-#from .views import booking_view, store_booking, get_booking, delete_booking
-from .views import booking_view, store_booking, get_booking, delete_booking, custom_404
+from .sitemaps import StaticViewSitemap
+from .views import store_booking, get_booking, delete_booking, custom_404, booking
+
+sitemaps = {
+    'static': StaticViewSitemap,
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='home'),
-    path('booking/', views.booking, name='booking'),
+    path('booking/', booking, name='booking_view'),
 
     path('accounts/', include('allauth.urls')),
     path('store_booking/', store_booking, name='store_booking'),
     path('get_booking/<int:booking_id>/', get_booking, name='get_booking'),
     path('delete_booking/<int:booking_id>/', delete_booking, name='delete_booking'),
+    path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
-# Додаємо обробник 404 помилок
 handler404 = custom_404

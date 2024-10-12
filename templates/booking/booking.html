@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f0f0f0;
         }
 
         .container {
@@ -25,36 +26,38 @@
 
         .calendar {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            flex-direction: column; /* Зміна на колонку для тижнів */
             border: 1px solid #ccc;
-            padding: 20px;
             margin-bottom: 20px;
+            background-color: white;
         }
 
-        .calendar .day {
-            width: calc(14.28% - 10px); /* 7 днів на тиждень */
-            margin-bottom: 10px;
-            text-align: center;
+        .week-row {
+            display: flex; /* Всі дні в одному рядку */
+        }
+
+        .day {
+            flex: 1; /* Зміна на флекс, щоб дні займали однакову ширину */
             padding: 20px;
-            background-color: #f1f1f1;
+            text-align: center;
             border: 1px solid #ccc;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .calendar .reserved {
+        .day:hover {
+            background-color: #ddd; /* Зміна кольору при наведенні */
+        }
+
+        .reserved {
             background-color: #ff6961;
             color: white;
             cursor: not-allowed;
         }
 
-        .calendar .editable {
+        .available {
             background-color: #4CAF50;
             color: white;
-        }
-
-        .calendar .day:hover {
-            background-color: #ddd;
         }
 
         .modal {
@@ -121,11 +124,29 @@
         .delete-button:hover {
             background-color: #ff0000;
         }
+
+        .header-row {
+            display: flex;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .day-header {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-right: 1px solid #ccc;
+        }
+
+        .day-header:last-child {
+            border-right: none; /* Приховати праву межу останнього заголовка */
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <a href="/">Return to Home</a>
     <h1>Booking Calendar</h1>
     <div class="login-section">
         <div>
@@ -137,11 +158,7 @@
         </div>
     </div>
     <div class="calendar" id="calendar">
-        {% for day in calendar_days %}
-        <div class="day {% if day.is_reserved %}reserved{% endif %} {% if day.editable %}editable{% endif %}" data-date="{{ day.date }}" {% if day.booking_id %}data-booking-id="{{ day.booking_id }}"{% endif %}>
-            {{ day.day_number }}
-        </div>
-        {% endfor %}
+        <!-- Календар тут -->
     </div>
 </div>
 
@@ -149,8 +166,8 @@
     <div class="modal-content">
         <span id="closeModal" class="close">&times;</span>
         <h2>Edit Booking</h2>
-        <form id="bookingForm" method="POST" action="{% url 'store_booking' %}">
-            {% csrf_token %}
+        <form id="bookingForm" method="POST">
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token }}">
             <input type="hidden" id="bookingId" name="bookingId" value="">
             <label for="date">Date:</label>
             <input type="text" id="date" name="date" readonly>
@@ -160,6 +177,8 @@
             <input type="text" id="surname" name="surname" required>
             <label for="mobile">Mobile:</label>
             <input type="text" id="mobile" name="mobile" required>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required>
             <button type="submit">Save</button>
             <button type="button" class="delete-button" id="deleteBookingButton">Delete</button>
         </form>
@@ -174,57 +193,49 @@
         const dateInput = document.getElementById('date');
         dateInput.value = dayCell.getAttribute('data-date');
         modal.style.display = 'block';
-        currentBookingId = dayCell.getAttribute('data-booking-id'); // Зберегти id бронювання
-        document.getElementById('bookingId').value = currentBookingId; // Встановити значення id
-        const nameInput = document.getElementById('name');
-        const surnameInput = document.getElementById('surname');
-        const mobileInput = document.getElementById('mobile');
 
-        // Задати значення для полів, якщо бронювання вже існує
+        currentBookingId = dayCell.getAttribute('data-booking-id');
+        document.getElementById('bookingId').value = currentBookingId;
+
         if (currentBookingId) {
-            // Запросити дані бронювання, якщо потрібно
             fetch(`/get_booking/${currentBookingId}/`)
                 .then(response => response.json())
                 .then(data => {
-                    nameInput.value = data.name;
-                    surnameInput.value = data.surname;
-                    mobileInput.value = data.mobile;
+                    document.getElementById('name').value = data.name;
+                    document.getElementById('surname').value = data.surname;
+                    document.getElementById('mobile').value = data.mobile;
+                    document.getElementById('email').value = data.email;
                 });
         } else {
-            nameInput.value = '';
-            surnameInput.value = '';
-            mobileInput.value = '';
+            document.getElementById('name').value = '';
+            document.getElementById('surname').value = '';
+            document.getElementById('mobile').value = '';
+            document.getElementById('email').value = '';
         }
     }
 
-    // Авторизація користувача
     document.getElementById('loginButton').onclick = function() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-
-        // Тут ви можете додати логіку для авторизації
         if (username && password) {
-            alert('Login successful!'); // Сповіщення про успішну авторизацію
-            // Додайте логіку для подальшої обробки авторизації (наприклад, збереження токена, оновлення UI тощо)
+            alert('Login successful!');
         } else {
-            alert('Please enter valid credentials.'); // Сповіщення про невірні дані
+            alert('Please enter valid credentials.');
         }
     };
 
-    // Видалення бронювання
     document.getElementById('deleteBookingButton').onclick = function() {
         if (currentBookingId) {
             if (confirm("Are you sure you want to delete this booking?")) {
-                // Відправити запит на видалення
                 fetch(`/delete_booking/${currentBookingId}/`, {
                     method: 'DELETE',
                     headers: {
-                        'X-CSRFToken': '{{ csrf_token }}',
+                        'X-CSRFToken': document.getElementById('csrf_token').value,
                     },
                 }).then(response => {
                     if (response.ok) {
                         alert("Booking deleted successfully.");
-                        location.reload(); // Оновити сторінку
+                        location.reload();
                     } else {
                         alert("Failed to delete booking.");
                     }
@@ -233,12 +244,10 @@
         }
     };
 
-    // Закриття модального вікна
     document.getElementById('closeModal').onclick = function() {
         document.getElementById('editModal').style.display = 'none';
     };
 
-    // Закриття модального вікна при натисканні поза ним
     window.onclick = function(event) {
         const modal = document.getElementById('editModal');
         if (event.target === modal) {
@@ -246,11 +255,83 @@
         }
     };
 
-    // Додати події на кожен день
-    document.querySelectorAll('.editable').forEach(day => {
-        day.addEventListener('click', () => openModal(day));
-    });
-</script>
+    async function generateCalendar() {
+        const calendar = document.getElementById('calendar');
+        calendar.innerHTML = '';
 
+        const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        // Створюємо заголовки днів тижня
+        const headerRow = document.createElement('div');
+        headerRow.classList.add('header-row');
+        daysOfWeek.forEach(day => {
+            const dayHeader = document.createElement('div');
+            dayHeader.classList.add('day-header');
+            dayHeader.textContent = day;
+            headerRow.appendChild(dayHeader);
+        });
+        calendar.appendChild(headerRow);
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth();
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        try {
+            const response = await fetch('/booking/', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const bookings = await response.json().catch(() => []); // Якщо не JSON, то просто пустий масив
+
+            let dayCount = 1;
+
+            for (let i = 0; i < 6; i++) { // максимум 6 тижнів
+                const weekRow = document.createElement('div');
+                weekRow.classList.add('week-row');
+
+                for (let j = 0; j < 7; j++) {
+                    if (i === 0 && j < firstDayOfMonth) {
+                        const emptyCell = document.createElement('div');
+                        emptyCell.classList.add('day');
+                        weekRow.appendChild(emptyCell);
+                    } else if (dayCount > daysInMonth) {
+                        break;
+                    } else {
+                        const dayCell = document.createElement('div');
+                        dayCell.classList.add('day');
+                        const dateString = `${year}-${month + 1}-${dayCount}`;
+                        dayCell.setAttribute('data-date', dateString);
+                        dayCell.textContent = dayCount;
+
+                        const booking = bookings.find(b => b.date === dateString);
+                        if (booking) {
+                            dayCell.classList.add('reserved');
+                            dayCell.setAttribute('data-booking-id', booking.id);
+                            dayCell.onclick = () => openModal(dayCell);
+                        } else {
+                            dayCell.classList.add('available');
+                            dayCell.setAttribute('data-booking-id', '');
+                            dayCell.onclick = () => openModal(dayCell);
+                        }
+
+                        weekRow.appendChild(dayCell);
+                        dayCount++;
+                    }
+                }
+
+                calendar.appendChild(weekRow);
+            }
+        } catch (error) {
+            console.error('Error fetching bookings:', error);
+            alert('Failed to load bookings.');
+        }
+    }
+
+    generateCalendar();
+</script>
 </body>
 </html>
