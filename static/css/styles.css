@@ -38,13 +38,13 @@ body {
 }
 .link {
     display: inline-block;
-    margin-top: 10px; /* Відступ зверху */
-    color: blue; /* Колір тексту */
-    text-decoration: underline; /* Підкреслення тексту */
+    margin-top: 10px;
+    color: blue;
+    text-decoration: underline;
 }
 
 .link:hover {
-    color: darkblue; /* Колір при наведенні */
+    color: darkblue;
 }
 
 /* 2 */
@@ -55,8 +55,8 @@ body {
 
 .photos-row {
     display: flex;
-    justify-content: space-between; /* full gorizont */
-    margin-bottom: 20px; /* between lines */
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .photos-row img {

@@ -23,7 +23,6 @@ def booking(request):
     first_day_of_month = today.replace(day=1)
     last_day_of_month = (first_day_of_month + timedelta(days=31)).replace(day=1) - timedelta(days=1)
 
-    # Отримуємо бронювання (якщо користувач авторизований)
     if request.user.is_authenticated:
         bookings = Booking.objects.filter(date__range=[first_day_of_month, last_day_of_month], user=request.user)
     else:
@@ -36,7 +35,6 @@ def booking(request):
         date = first_day_of_month.replace(day=day)
         is_reserved = date.date() in reserved_dates
 
-        # Для неавторизованих користувачів:
         editable = request.user.is_authenticated and (is_reserved and (reserved_dates[date.date()] in bookings.values_list('id', flat=True)))
 
         calendar_days.append({
@@ -47,11 +45,9 @@ def booking(request):
             'booking_id': reserved_dates.get(date.date(), None)
         })
 
-    # Завжди повертаємо JSON для AJAX-запитів, незалежно від наявності бронювань
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return JsonResponse(calendar_days, safe=False)  # Завжди повертаємо JSON для AJAX-запитів
+        return JsonResponse(calendar_days, safe=False)
 
-        # Якщо це звичайний запит, повертаємо сторінку
     return render(request, 'booking/booking.html', {'calendar_days': calendar_days})
 
 @csrf_exempt

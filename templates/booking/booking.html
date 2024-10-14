@@ -26,18 +26,18 @@
 
         .calendar {
             display: flex;
-            flex-direction: column; /* Зміна на колонку для тижнів */
+            flex-direction: column;
             border: 1px solid #ccc;
             margin-bottom: 20px;
             background-color: white;
         }
 
         .week-row {
-            display: flex; /* Всі дні в одному рядку */
+            display: flex;
         }
 
         .day {
-            flex: 1; /* Зміна на флекс, щоб дні займали однакову ширину */
+            flex: 1;
             padding: 20px;
             text-align: center;
             border: 1px solid #ccc;
@@ -46,7 +46,7 @@
         }
 
         .day:hover {
-            background-color: #ddd; /* Зміна кольору при наведенні */
+            background-color: #ddd;
         }
 
         .reserved {
@@ -139,7 +139,7 @@
         }
 
         .day-header:last-child {
-            border-right: none; /* Приховати праву межу останнього заголовка */
+            border-right: none;
         }
     </style>
 </head>
@@ -158,7 +158,7 @@
         </div>
     </div>
     <div class="calendar" id="calendar">
-        <!-- Календар тут -->
+        <!--  -->
     </div>
 </div>
 
@@ -261,7 +261,7 @@
 
         const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-        // Створюємо заголовки днів тижня
+
         const headerRow = document.createElement('div');
         headerRow.classList.add('header-row');
         daysOfWeek.forEach(day => {
@@ -285,11 +285,11 @@
                 }
             });
 
-            const bookings = await response.json().catch(() => []); // Якщо не JSON, то просто пустий масив
+            const bookings = await response.json().catch(() => []);
 
             let dayCount = 1;
 
-            for (let i = 0; i < 6; i++) { // максимум 6 тижнів
+            for (let i = 0; i < 6; i++) {
                 const weekRow = document.createElement('div');
                 weekRow.classList.add('week-row');
 
