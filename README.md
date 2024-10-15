@@ -7,9 +7,10 @@ Car Booking Test Drive - Toyota Yaris Hybrid 2018
 
 ## Description
 
-This site is designed to provide a list of consulting, information and development services on various platforms. 
-Description of available solutions I provide consulting, information and development services on such platforms.
-I am a skilled Salesforce Developer with a strong background in software development, specializing in delivering innovative and scalable solutions for various industries, including mushroom production, catering, and motor transport. My experience includes developing and integrating Salesforce applications using Apex, LWC, Flows, and APIs, as well as data migration using VS Code and Data Loader.
+This project is a simple web application that allows users to book test drives for the Toyota Yaris Hybrid 2018. 
+The application simulates a booking system where users can select available time slots, provide personal details, 
+and confirm a test drive. It's designed to demonstrate fundamental concepts of web development 
+and booking system management, such as user interaction, form handling, and scheduling.
 
 ![amiresponsive](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/adaptyv.png)
 

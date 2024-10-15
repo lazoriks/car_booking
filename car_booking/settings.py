@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+import dj_database_url
 import os
 from pathlib import Path
 
@@ -22,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8das6g&0%!qnbfhzn(y+8tj2bwpq56vc5)yi8a-rc+o6_q9fpl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['car-booking-toyota-11b6aa2e6f11.herokuapp.com', 'localhost']
 
 # Application definition
 
@@ -131,7 +132,7 @@ LOGIN_URL = '/login/'  #
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Оптимізація для Heroku
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
