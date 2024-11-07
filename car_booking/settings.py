@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8das6g&0%!qnbfhzn(y+8tj2bwpq56vc5)yi8a-rc+o6_q9fpl'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-8das6g&0%!qnbfhzn(y+8tj2bwpq56vc5)yi8a-rc+o6_q9fpl')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['car-booking-toyota-11b6aa2e6f11.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1','car-booking-toyota-11b6aa2e6f11.herokuapp.com', 'localhost']
 
 # Application definition
 
@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'car_booking',
     'django.contrib.sitemaps',
+    'test_drive',
+    'car_booking',
 ]
 
 MIDDLEWARE = [
@@ -86,16 +87,19 @@ WSGI_APPLICATION = 'car_booking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'puma_rigid_evil_925325',
-        'USER': 'ukivfbd7nzy',
-        'PASSWORD': 'Iw1NaWCu3I4I',
-        'HOST': 'ep-gentle-mountain-a23bxz6h-pooler.eu-central-1.aws.neon.tech',
-        'PORT': '5432',
+if "DATABASE_URL" in os.environ:
+    print("database = PostgreSQL via Heroku")
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
     }
-}
+else:
+    print("database = db.sqlite3")
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -143,13 +147,5 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# settings.py
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'cr4dwbft@students.codeinstitute.net'
-EMAIL_HOST_PASSWORD = 'ilbj zhnc tawr aobx'
-DEFAULT_FROM_EMAIL = 'lazoriksua@gmail.com'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'

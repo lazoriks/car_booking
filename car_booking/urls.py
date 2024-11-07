@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
+from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.views.generic import TemplateView
 
 from . import views
 from .sitemaps import StaticViewSitemap
-from .views import store_booking, get_booking, delete_booking, custom_404, booking
+from .views import custom_404
+
 
 sitemaps = {
     'static': StaticViewSitemap,
@@ -29,15 +31,13 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='home'),
-    path('booking/', booking, name='booking_view'),
-
+    path('', views.index, name='index'),
+    path('booking/', include('test_drive.urls'), name='booking_view'),
     path('accounts/', include('allauth.urls')),
-    path('store_booking/', store_booking, name='store_booking'),
-    path('get_booking/<int:booking_id>/', get_booking, name='get_booking'),
-    path('delete_booking/<int:booking_id>/', delete_booking, name='delete_booking'),
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
 
 handler404 = custom_404

@@ -1,337 +1,39 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Calendar</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-
-        .container {
-            width: 100%;
-            padding: 20px;
-        }
-
-        .login-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .calendar {
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #ccc;
-            margin-bottom: 20px;
-            background-color: white;
-        }
-
-        .week-row {
-            display: flex;
-        }
-
-        .day {
-            flex: 1;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .day:hover {
-            background-color: #ddd;
-        }
-
-        .reserved {
-            background-color: #ff6961;
-            color: white;
-            cursor: not-allowed;
-        }
-
-        .available {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 50%;
-            position: relative;
-        }
-
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .modal form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal label {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        .modal input {
-            padding: 10px;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .modal button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .modal button:hover {
-            background-color: #45a049;
-        }
-
-        .delete-button {
-            background-color: #ff4c4c;
-            margin-top: 10px;
-        }
-
-        .delete-button:hover {
-            background-color: #ff0000;
-        }
-
-        .header-row {
-            display: flex;
-            font-weight: bold;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .day-header {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            border-right: 1px solid #ccc;
-        }
-
-        .day-header:last-child {
-            border-right: none;
-        }
-    </style>
+    <title>Booking</title>
+    <link rel="stylesheet" href="{% static 'css/booking.css' %}">
 </head>
 <body>
+    <header>
+        <nav>
+            <a href="{% url 'index' %}">Home</a>
+            {% if user.is_authenticated and user.is_staff %}
+                <a href="{% url 'report' %}">Report</a>
+            {% endif %}
+        </nav>
+    </header>
 
-<div class="container">
-    <a href="/">Return to Home</a>
-    <h1>Booking Calendar</h1>
-    <div class="login-section">
-        <div>
-            <label for="username">Login:</label>
-            <input type="text" id="username">
-            <label for="password">Password:</label>
-            <input type="password" id="password">
-            <button id="loginButton">Login</button>
-        </div>
-    </div>
-    <div class="calendar" id="calendar">
-        <!--  -->
-    </div>
-</div>
+    <h1>Book a Test Drive / Request to Buy</h1>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-<div id="editModal" class="modal">
-    <div class="modal-content">
-        <span id="closeModal" class="close">&times;</span>
-        <h2>Edit Booking</h2>
-        <form id="bookingForm" method="POST">
-            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token }}">
-            <input type="hidden" id="bookingId" name="bookingId" value="">
-            <label for="date">Date:</label>
-            <input type="text" id="date" name="date" readonly>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="surname">Surname:</label>
-            <input type="text" id="surname" name="surname" required>
-            <label for="mobile">Mobile:</label>
-            <input type="text" id="mobile" name="mobile" required>
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required>
-            <button type="submit">Save</button>
-            <button type="button" class="delete-button" id="deleteBookingButton">Delete</button>
-        </form>
-    </div>
-</div>
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Booking Form</h2>
+        {{ booking_form.as_p }}
 
-<script>
-    let currentBookingId = null;
+        <h2>Request to Buy Form</h2>
+        {{ request_form.as_p }}
 
-    function openModal(dayCell) {
-        const modal = document.getElementById('editModal');
-        const dateInput = document.getElementById('date');
-        dateInput.value = dayCell.getAttribute('data-date');
-        modal.style.display = 'block';
-
-        currentBookingId = dayCell.getAttribute('data-booking-id');
-        document.getElementById('bookingId').value = currentBookingId;
-
-        if (currentBookingId) {
-            fetch(`/get_booking/${currentBookingId}/`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('name').value = data.name;
-                    document.getElementById('surname').value = data.surname;
-                    document.getElementById('mobile').value = data.mobile;
-                    document.getElementById('email').value = data.email;
-                });
-        } else {
-            document.getElementById('name').value = '';
-            document.getElementById('surname').value = '';
-            document.getElementById('mobile').value = '';
-            document.getElementById('email').value = '';
-        }
-    }
-
-    document.getElementById('loginButton').onclick = function() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        if (username && password) {
-            alert('Login successful!');
-        } else {
-            alert('Please enter valid credentials.');
-        }
-    };
-
-    document.getElementById('deleteBookingButton').onclick = function() {
-        if (currentBookingId) {
-            if (confirm("Are you sure you want to delete this booking?")) {
-                fetch(`/delete_booking/${currentBookingId}/`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRFToken': document.getElementById('csrf_token').value,
-                    },
-                }).then(response => {
-                    if (response.ok) {
-                        alert("Booking deleted successfully.");
-                        location.reload();
-                    } else {
-                        alert("Failed to delete booking.");
-                    }
-                });
-            }
-        }
-    };
-
-    document.getElementById('closeModal').onclick = function() {
-        document.getElementById('editModal').style.display = 'none';
-    };
-
-    window.onclick = function(event) {
-        const modal = document.getElementById('editModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    };
-
-    async function generateCalendar() {
-        const calendar = document.getElementById('calendar');
-        calendar.innerHTML = '';
-
-        const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-
-        const headerRow = document.createElement('div');
-        headerRow.classList.add('header-row');
-        daysOfWeek.forEach(day => {
-            const dayHeader = document.createElement('div');
-            dayHeader.classList.add('day-header');
-            dayHeader.textContent = day;
-            headerRow.appendChild(dayHeader);
-        });
-        calendar.appendChild(headerRow);
-
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth();
-        const firstDayOfMonth = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        try {
-            const response = await fetch('/booking/', {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            });
-
-            const bookings = await response.json().catch(() => []);
-
-            let dayCount = 1;
-
-            for (let i = 0; i < 6; i++) {
-                const weekRow = document.createElement('div');
-                weekRow.classList.add('week-row');
-
-                for (let j = 0; j < 7; j++) {
-                    if (i === 0 && j < firstDayOfMonth) {
-                        const emptyCell = document.createElement('div');
-                        emptyCell.classList.add('day');
-                        weekRow.appendChild(emptyCell);
-                    } else if (dayCount > daysInMonth) {
-                        break;
-                    } else {
-                        const dayCell = document.createElement('div');
-                        dayCell.classList.add('day');
-                        const dateString = `${year}-${month + 1}-${dayCount}`;
-                        dayCell.setAttribute('data-date', dateString);
-                        dayCell.textContent = dayCount;
-
-                        const booking = bookings.find(b => b.date === dateString);
-                        if (booking) {
-                            dayCell.classList.add('reserved');
-                            dayCell.setAttribute('data-booking-id', booking.id);
-                            dayCell.onclick = () => openModal(dayCell);
-                        } else {
-                            dayCell.classList.add('available');
-                            dayCell.setAttribute('data-booking-id', '');
-                            dayCell.onclick = () => openModal(dayCell);
-                        }
-
-                        weekRow.appendChild(dayCell);
-                        dayCount++;
-                    }
-                }
-
-                calendar.appendChild(weekRow);
-            }
-        } catch (error) {
-            console.error('Error fetching bookings:', error);
-            alert('Failed to load bookings.');
-        }
-    }
-
-    generateCalendar();
-</script>
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
