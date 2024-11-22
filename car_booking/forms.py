@@ -1,5 +1,5 @@
 from django import forms
-from .models import Booking
+from test_drive.models import Booking
 
 class BookingForm(forms.ModelForm):
     class Meta:
