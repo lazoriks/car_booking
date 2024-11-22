@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -67,3 +67,35 @@ def login_or_register(request):
         'login_form': login_form,
         'register_form': register_form
     })
+
+def edit_record(request, model_name, record_id):
+    model_map = {
+        'booking': Booking,
+        'request_to_buy': RequestToBuy,
+    }
+    model = model_map.get(model_name)
+
+    if not model:
+        messages.error(request, "Invalid model name.")
+        return redirect('report')
+
+    record = get_object_or_404(model, id=record_id)
+
+    form_map = {
+        'booking': BookingForm,
+        'request_to_buy': RequestToBuyForm,
+    }
+    form_class = form_map.get(model_name)
+
+    if request.method == 'POST':
+        form = form_class(request.POST, instance=record)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Record updated successfully!")
+            return redirect('report')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = form_class(instance=record)
+
+    return render(request, 'booking/edit_record.html', {'form': form, 'record': record})

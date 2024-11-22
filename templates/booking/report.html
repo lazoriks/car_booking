@@ -1,5 +1,4 @@
 {% load static %}
-<!-- report.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,6 +79,9 @@
                     <td>{{ booking.date }}</td>
                     <td>{{ booking.car_model }}</td>
                     <td>{{ booking.status }}</td>
+                    <td>
+                        <a href="{% url 'edit_record' 'booking' booking.id %}">Edit</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -108,6 +110,9 @@
                     <td>{{ request.car_model }}</td>
                     <td>{{ request.price }}</td>
                     <td>{{ request.status }}</td>
+                    <td>
+                        <a href="{% url 'edit_record' 'request_to_buy' request.id %}">Edit</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

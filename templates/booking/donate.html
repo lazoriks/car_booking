@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate</title>
+</head>
+<body>
+    <h1>Donate for my website</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="amount">Enter amount (USD):</label>
+        <input type="number" name="amount" id="amount" min="1" required>
+        <button type="submit">Donate</button>
+    </form>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
