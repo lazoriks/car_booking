@@ -2,11 +2,14 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import stripe
 from django.conf import settings
+from django.contrib import messages
 
 from django.http import HttpResponseNotFound
 from django.template import loader
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
+from car_booking.forms import SubscriptionForm
+from car_booking.models import Subscription
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -43,10 +46,8 @@ def custom_404(request, exception):
     template = loader.get_template('404.html')
     return HttpResponseNotFound(template.render())
 
-
 def index(request):
     return render(request, 'home/index.html')
-
 
 def booking(request):
     if request.method == 'POST':
@@ -59,3 +60,18 @@ def booking(request):
         form = AuthenticationForm()  
 
     return render(request, 'booking/booking.html', {'form': form})
+
+def subscribe(request):
+    if request.method == 'POST':
+        form = SubscriptionForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            Subscription.objects.get_or_create(email=email)
+            messages.success(request, 'You have successfully subscribed to the newsletter!')
+            return redirect('index')
+        else:
+            messages.error(request, 'There was an error with your subscription.')
+    else:
+        form = SubscriptionForm()
+
+    return render(request, 'subscription/subscribe.html', {'form': form})

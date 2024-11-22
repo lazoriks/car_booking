@@ -40,6 +40,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('donate/', views.donate, name='donate'),
     path('success/', views.success, name='success'),
+    path('subscribe/', views.subscribe, name='subscribe'),
 ]
 
 handler404 = custom_404

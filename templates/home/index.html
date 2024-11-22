@@ -85,6 +85,15 @@
 
     </section>
 
+    <div class="subscription">
+        <h3>Subscribe for updates on this car</h3>
+        <form action="{% url 'subscribe' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Subscribe</button>
+        </form>
+    </div>
+
     <!--  Footer -->
     <footer>
         <p>&copy; 2024 Car Booking. All rights reserved.</p>
