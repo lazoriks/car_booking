@@ -22,7 +22,8 @@ from django.views.generic import TemplateView
 
 from . import views
 from .sitemaps import StaticViewSitemap
-from .views import custom_404
+from car_booking.views import custom_404
+from test_drive.views import login_or_register
 
 
 sitemaps = {
@@ -34,6 +35,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('booking/', include('test_drive.urls'), name='booking_view'),
     path('accounts/', include('allauth.urls')),
+    path('accounts/login/', login_or_register, name='login_or_register'),
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
