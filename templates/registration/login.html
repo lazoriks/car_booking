@@ -1,8 +1,12 @@
-
 <form method="post">
     {% csrf_token %}
     <h2>Login</h2>
     {{ login_form.as_p }}
+    {% if login_form.non_field_errors %}
+        <div class="error">
+            {{ login_form.non_field_errors }}
+        </div>
+    {% endif %}
     <button type="submit" name="login">Login</button>
 </form>
 
@@ -12,6 +16,11 @@
     {% csrf_token %}
     <h2>Create User</h2>
     {{ register_form.as_p }}
+    {% if register_form.non_field_errors %}
+        <div class="error">
+            {{ register_form.non_field_errors }}
+        </div>
+    {% endif %}
     <button type="submit" name="register">Create User</button>
 </form>
 
