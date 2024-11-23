@@ -35,11 +35,11 @@ def donate(request):
             )
             return redirect(session.url, code=303)
         except Exception as e:
-            return render(request, 'donate.html', {'error': str(e)})
-    return render(request, 'donate.html')
+            return render(request, 'booking/donate.html', {'error': str(e)})
+    return render(request, 'booking/donate.html')
 
 def success(request):
-    return render(request, 'success.html')
+    return render(request, 'booking/success.html')
 
 @csrf_exempt
 def custom_404(request, exception):
@@ -74,4 +74,4 @@ def subscribe(request):
     else:
         form = SubscriptionForm()
 
-    return render(request, 'subscription/subscribe.html', {'form': form})
+    return render(request, 'home/subscribe.html', {'form': form})
