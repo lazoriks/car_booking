@@ -132,6 +132,8 @@ The idea of developing a flexible application for selling cars with the ability 
 
 ## Testing
 
+* Written tests and executed in tests.py
+
 ### Code Validation
 
 * Use [CI Python Linter](https://pep8ci.herokuapp.com/)
