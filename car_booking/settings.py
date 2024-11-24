@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'test_drive',
     'car_booking',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -69,9 +70,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'car_booking.urls'
+
+CORS_ALLOWED_ORIGINS = [
+    "https://ui.dev",  
+]
 
 TEMPLATES = [
     {
