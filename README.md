@@ -4,6 +4,7 @@
 ## Title
 
 Car Booking Test Drive - Toyota Yaris Hybrid 2018
+![Home](static/images/nome.png)
 
 ## Description
 
@@ -11,8 +12,6 @@ This project is a simple web application that allows users to book test drives f
 The application simulates a booking system where users can select available time slots, provide personal details, 
 and confirm a test drive. It's designed to demonstrate fundamental concepts of web development 
 and booking system management, such as user interaction, form handling, and scheduling.
-
-![amiresponsive](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/adaptyv.png)
 
 ## Link to Live Site
 
@@ -22,51 +21,74 @@ This site was built using [Heroku](https://car-booking-toyota-11b6aa2e6f11.herok
 
 ### First-Time User Experience
 
-Users are greeted with a visually appealing background image and a clear navigation menu.
-Each section provides concise information about different business automation domains.
-Clicking on the images navigates users to dedicated pages for more details.
+New users are greeted with an attractive design and clear navigation menu. 
+Each section provides clear information on the various services related to test drive bookings and car purchase enquiries. 
+Clicking on buttons allows users to quickly navigate to the relevant pages for more detailed information.
 
 ### Returning User
 
-Returning users can easily navigate to specific sections of interest using the navigation menu.
-Consistent design and layout enhance a familiar experience for users.
+Regular users can easily find the sections they need with the help of a user-friendly navigation menu. 
+The consistent design and layout create a familiar and welcoming environment.
 
-### User Stories (PP4 & PP5)
+### User Stories 
 
-As a potential client, I want to understand the expertise of the developer in CRM, Accounting, and ERP.
-As a visitor, I want a visually appealing and easy-to-navigate portfolio site.
-As a user interested in specific services, I want detailed information about each service.
+As a potential customer, I want to know about the possibilities of booking a test drive and buying a car. 
+As a visitor, I want to see a visually appealing and easy-to-navigate website. 
+As a user interested in booking a test drive, I want to quickly find and fill out the appropriate form.
 
-## Technologies Used
+## Technologies used
+- ### Languages:
+    
+    + [Python 3.8.5](https://www.python.org/downloads/release/python-385/): the primary language used to develop the server-side of the website.
+    + [JS](https://www.javascript.com/): the primary language used to develop interactive components of the website.
+    + [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML): the markup language used to create the website.
+    + [CSS](https://developer.mozilla.org/en-US/docs/Web/css): the styling language used to style the website.
 
-* [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) was used as the foundation of the site.
-* [CSS](https://developer.mozilla.org/en-US/docs/Web/css) - was used to add the styles and layout of the site.
-* [CSS Flexbox](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox) - was used to arrange items simmetrically on the pages.
-* [CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid)- was used to make "gallery" and "contact" pages responsive.
-* [CSS roots](https://developer.mozilla.org/en-US/docs/Web/CSS/:root) was used to declaring global CSS variables and apply them throughout the project.
-* [VSCode](https://code.visualstudio.com/) was used as the main tool to write and edit code.
-* [Git](https://git-scm.com/) was used for the version control of the website.
-* [GitHub](https://github.com/) was used to host the code of the website.
-* [GIMP](https://www.gimp.org/) was used to make and resize images for the README file.
+- ### Frameworks and libraries:
 
+    + [Django](https://www.djangoproject.com/): python framework used to create all the logic.
+
+- ### Databases:
+
+    + [SQLite](https://www.sqlite.org/): was used as a development database.
+    + [PostgreSQL](https://www.postgresql.org/): the database used to store all the data.
+
+
+- ### Other tools:
+
+    + [Git](https://git-scm.com/): the version control system used to manage the code.
+    + [Pip3](https://pypi.org/project/pip/): the package manager used to install the dependencies.
+    + [Gunicorn](https://gunicorn.org/): the web server used to run the website.
+    + [Psycopg2](https://www.psycopg.org/): the database driver used to connect to the database.
+    + [Django-allauth](https://django-allauth.readthedocs.io/en/latest/): the authentication library used to create the user accounts.
+    + [Django-crispy-forms](https://django-cryptography.readthedocs.io/en/latest/): was used to control the rendering behavior of Django forms.
+    + [Render](https://pypi.org/project/render/): was used to render the README file.
+    + [GitHub](https://github.com/): used to host the website's source code.
+    + [VSCode](https://code.visualstudio.com/): the IDE used to develop the website.
+    + [Chrome DevTools](https://developer.chrome.com/docs/devtools/open/): was used to debug the website.
+    + [Font Awesome](https://fontawesome.com/): was used to create the icons used in the website.
+    + [stripe](https://stripe.com/): was used to create the payment system.
+    + [Sitemap Generator](https://www.xml-sitemaps.com/) was used to create the sitemap.xml file.
+
+---
 ## Design
 
 ### Wireframes
 
-Initial wireframes were created to plan the layout and structure of the site.
+Initial mockups were created to plan the structure and layout of the site.
 
 ### Site Structure
 
-The site follows a one-page structure with distinct sections for CRM, Accounting & Payroll, ERP, and Contacts.
+The site has a multi-page structure with separate sections for booking test drives, purchase enquiries and contacts.
 
 ### Imagery Used
 
-High-quality images are used for the background and section headers.
+High-quality images are used for backgrounds and section headings. 
 Relevant icons and images complement the content.
 
 ### Colour Scheme
 
-The colour scheme includes shades of green and earthy tones for a professional and cohesive look.
+The colour scheme incorporates shades of blue and grey for a professional and consistent look.
 
 ### Typography
 
@@ -80,19 +102,18 @@ Clear navigation menu at the top for easy section access.
 Each section has a link to its dedicated page for more detailed information.
 
 ### Section Navigation and Profile
-* About me
-* Solutions
-* Contacts
-![Section1](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/sectionprofile.png)
+* BOOK TESTDRIVE
+* Donate for my website
+* Marketplace Facebook
+![Section1](static/images/menu.png)
 
-### Section Solutions
-* CRM
-* Accounting&Payroll
-* ERP
-![Section2](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/sectionsolutions.png)
+### Services section
+* Booking a Test Drive
+* Request for Buy
+![Section2](static/images/book.png)
 
-### Section Contacts
-![Section3](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/sectioncontacts.png)
+### Section Subscribe
+![Section3](static/images/sub.png)
 
 ## Future Features
 
@@ -102,72 +123,130 @@ When learning Javascript, you will add dynamics and actions to the site
 
 ### Code Validation
 
-HTML and CSS were validated using W3C validators.
 
-![Check HTML](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/checkwc.png)
-
-![Check CSS](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/checkcss.png)
-
-### Responsiveness
-
-The site is designed to be responsive and tested on various devices.
-
-![Home page](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/home.png)
-![Accounting page](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/acc.png)
-![CRM page](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/crm.png)
-![ERP page](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/erp.png)
-
-### Lighthouse Testing
-
-Lighthouse testing ensures optimal performance, accessibility, SEO, and best practices.
-
-![Lighthouse](https://raw.githubusercontent.com/lazoriks/Portfolio/main/docs/lighthousetesting.png)
-
-### Accessibility Testing
-
-The site follows best practices for accessibility, ensuring inclusivity.
-
-### Manual Testing
-
-Extensive manual testing on different browsers and devices.
 
 ### Bugs
 
 #### Bugs Fixed
 
-- Addressed issues related to responsiveness and layout. Solution: fix cases according to standards
-- Background images return a 404. Solution: fix cases according to standards
-- Commented out code present in index.html. Solution: fix cases according to standards
-- Screenshots not broken in README. Solution: fix cases according to standards
-- Uppercase used on directories. Solution: fix cases according to standards
+- 
 
 #### Known Bugs
 
-No known bugs at the moment.
 
-HTML5, CSS3
-FontAwesome for icons
-
-Steps on Deploying, Cloning, and Forking
-
-Include step-by-step instructions for deploying, cloning, and forking the project.
 
 ## Deployment
 
-The process we went through to place the project on the hosting platform (GitHub)
-* The site was deployed to GitHub pages.
-The steps for deployment are as follows:
-* In the GitHub repository, go to the Settings tab
-* In the drop-down menu of the source section, select the main branch
-After selecting the main branch, the page will automatically refresh and you will see a detailed feed indicating that the deployment is successful.
+- The program was deployed to [Heroku](https://dashboard.heroku.com).
+
+### To deploy the project as an application that can be **run locally**:
+
+*Note:*
+  1. This project requires you to have Python installed on your local PC:
+  - `pip install python`
+
+  1. You will also need pip installed to allow the installation of modules the application uses.
+  - `pip install python3-pip`
+
+Create a local copy of the GitHub repository by following one of the two processes below:
+
+- Download ZIP file:
+  1. Go to the [GitHub Repo page](https://github.com/lazoriks/car_booking).
+  1. Click the Code button and download the ZIP file containing the project.
+  1. Extract the ZIP file to a location on your PC.
+
+- Clone the repository:
+  1. Open a folder on your computer with the terminal.
+  1. Run the following command
+  - `git clone https://github.com/lazoriks/car_booking.git`
+
+- Alternatively, if using Gitpod, you can click below to create your own workspace using this repository.
+
+  [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/lazoriks/car_booking)
+
+  1. Install Python module dependencies:
+     
+      1. Navigate to the folder madlib_with_python by executing the command:
+      - `cd car_booking`
+      1. Run the command pip install -r requirements.txt
+        - `pip install -r requirements.txt`      
+
+### To deploy the project to Heroku so it can be run as a remote web application:
+- Clone the repository:
+  1. Open a folder on your computer with the terminal.
+  1. Run the following command
+  - `git clone https://github.com/lazoriks/car_booking.git`
+
+  1. Create your own GitHub repository to host the code.
+  1. Run the command `git remote set-url origin <Your GitHub Repo Path>` to set the remote repository location to your repository.
+
+  1. Push the files to your repository with the following command:
+  `git push`
+  1. Create a Heroku account if you don't already have one here [Heroku](https://dashboard.heroku.com).
+  1. Create a new Heroku application on the following page here [New Heroku App](https://dashboard.heroku.com/apps):
+
+      - ![New Heroku App](static/images/newapp.png)
+
+  1. Go to the Deploy tab:
+
+      - ![Deploy Tab](static/images/deploy.png)
+
+  1. Link your GitHub account and connect the application to the repository you created.
+
+      - ![Link GitHub account](static/images/link.png)
+
+  1. Go to the Settings tab:
+  
+      - ![Settings Tab](static/images/sett.png)
+
+  1. Click "Add buildpack":
+
+      - ![Add Buildpack](static/images/build.png)
+
+  1. Add the Python buildpacks in the following order:
+
+      - ![Add Python](static/images/apps.png)
+
+  1. Click "Reveal Config Vars."
+
+      - ![Reveal Config Vars](static/images/vars.png)
+
+  1. Add 1 new Config Vars:
+      - Key: PORT Value: 8000
+      - *This Config was provided by [CODE INSTITUTE](https://codeinstitute.net/)*.
+
+  1. Go back to the Deploy tab:
+
+      - ![Deploy Tab](static/images/deploy.png)
+
+  1. Click "Deploy Branch":
+
+      - ![Deploy Branch](static/images/branch.png)
+
+      - Wait for the completion of the deployment.
+
+      - ![Deploying Branch](static/images/wait.png)
+
+  1. Click "Open app" to launch the application inside a web page.
+
+      - ![View Button](static/images/view.png)
+
+---
 
 ## Credits
 
 ### Content and text
 
-* Main information from [Info](https://www.linkedin.com/company/oneservice-ua/)
-* Many text and info from [My profile in trailhead](https://www.salesforce.com/trailblazer/slazoryk)
-and [My profile in Linkedin](https://www.linkedin.com/in/lazoriks/)
+*
+* Some information from [Youtube video for example](https://www.youtube.com/watch?v=oZwyA9lUwRk)
+
+- [GitHub](https://github.com/) for giving the idea of the project's design.
+- [Django](https://www.djangoproject.com/) for the framework.
+- [Render](https://render.com/): for providing a free hosting.
+- [Postgresql](https://www.postgresql.org/): for providing a free database.
+- [Stripe](https://stripe.com/): for providing a free payment gateway.
+- [Very Academy Youtube Channel](https://www.youtube.com/c/veryacademy): for brilliant tutorials, which shed the light on the implementation of database with multi-values products, precise explanations of the stripe API, and many other things!
+- [Sitemap Generator](https://www.xml-sitemaps.com/): for providing a free platform to generate sitemaps.
 
 ### Media
 
@@ -175,7 +254,10 @@ and [My profile in Linkedin](https://www.linkedin.com/in/lazoriks/)
 * Code institute for the deployment process
 * Translated with www.DeepL.com/Translator and Grammarly for Windows
 
-## Acknowledgements
-
-* Special thanks to [Laura Mayock](https://www.linkedin.com/in/laura-mayock/) and Julia Konovalova for the call and conversation that helped me, after the second unsuccessful attempt, to find the strength in the first place and to understand my shortcomings in the project and complete it. 
+### Acknowledgements
+* Special thanks to [Julia Konovalova](https://github.com/IuliiaKonovalova) for the call and conversation that helped me, after the first unsuccessful attempt, to find the strength in the first place and to understand my shortcomings in the project and complete it. 
 * Code Institute tutors and Slack community members for their support and help.
+
+---
+
+Happy coding!
