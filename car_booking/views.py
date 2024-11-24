@@ -13,6 +13,7 @@ from car_booking.models import Subscription
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+
 def donate(request):
     if request.method == 'POST':
         amount = int(request.POST['amount']) * 100
@@ -38,28 +39,33 @@ def donate(request):
             return render(request, 'booking/donate.html', {'error': str(e)})
     return render(request, 'booking/donate.html')
 
+
 def success(request):
     return render(request, 'booking/success.html')
+
 
 @csrf_exempt
 def custom_404(request, exception):
     template = loader.get_template('404.html')
     return HttpResponseNotFound(template.render())
 
+
 def index(request):
     return render(request, 'home/index.html')
+
 
 def booking(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
-        if form.is_valid():  
+        if form.is_valid():
             user = form.get_user()
-            login(request, user) 
-            return redirect('booking')  
+            login(request, user)
+            return redirect('booking')
     else:
-        form = AuthenticationForm()  
+        form = AuthenticationForm()
 
     return render(request, 'booking/booking.html', {'form': form})
+
 
 def subscribe(request):
     if request.method == 'POST':
@@ -67,10 +73,14 @@ def subscribe(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             request.session['subscribed_email'] = email
-            messages.success(request, 'You have successfully subscribed to the newsletter!')
+            messages.success(request, f'''
+You have successfully subscribed to the newsletter!
+''')
             return redirect('index')
         else:
-            messages.error(request, 'There was an error with your subscription.')
+            messages.error(request, f'''
+There was an error with your subscription.
+''')
     else:
         form = SubscriptionForm()
 
