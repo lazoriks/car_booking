@@ -4,7 +4,7 @@
 ## Title
 
 Car Booking Test Drive - Toyota Yaris Hybrid 2018
-![Home](static/images/nome.png)
+![Home](static/images/home.png)
 
 ## Description
 
@@ -12,6 +12,16 @@ This project is a simple web application that allows users to book test drives f
 The application simulates a booking system where users can select available time slots, provide personal details, 
 and confirm a test drive. It's designed to demonstrate fundamental concepts of web development 
 and booking system management, such as user interaction, form handling, and scheduling.
+
+---
+
+### The idea of creating an application
+
+This app was developed to provide flexible and affordable car sales with the ability to book a test drive and make a purchase offer. 
+The idea is to create a car model on the website, add pictures, a description of the car and the selling price. 
+At this stage, I have developed one variant of the car to demonstrate how the application works. 
+
+---
 
 ## Link to Live Site
 
@@ -117,23 +127,50 @@ Each section has a link to its dedicated page for more detailed information.
 
 ## Future Features
 
-When learning Javascript, you will add dynamics and actions to the site
+To further develop the idea of creating an application, it is necessary to add functionality and flexibility for adding car models. 
+The idea of developing a flexible application for selling cars with the ability to book a test drive and set a price offer. 
 
 ## Testing
 
 ### Code Validation
 
-
+* Use [CI Python Linter](https://pep8ci.herokuapp.com/)
+* Get info fron CI Python Linter
+ ![Valid](static/images/valid.png) 
 
 ### Bugs
 
 #### Bugs Fixed
 
-- 
+During the development of the application, there were bugs with the authorisation and logging in to the website. 
+I had to look for different sources and watch all the videos by CodeInstitute. 
+There are a lot of materials about Django embedded libraries. 
 
 #### Known Bugs
 
+* Test drive booking form does not complete successfully
 
+Description: Users may encounter an issue where the test drive booking form does not complete successfully.
+
+Solution: Make sure all required fields are filled in correctly and try again.
+
+* The navigation menu is unresponsive
+
+Description: Sometimes buttons and menus may not respond to clicks.
+
+Solution: Refresh the page or try using a different browser.
+
+* Images do not display correctly
+
+Description: Some images may not display properly on different devices.
+
+Solution: Make sure the images have the correct path and format.
+
+* Slow server response
+
+Description: Users may experience a slow server response when making requests.
+
+Solution: Check your internet connection and try again. If the problem persists, contact your site administrator.
 
 ## Deployment
 
@@ -237,8 +274,8 @@ Create a local copy of the GitHub repository by following one of the two process
 
 ### Content and text
 
-*
-* Some information from [Youtube video for example](https://www.youtube.com/watch?v=oZwyA9lUwRk)
+* Main information from [Youtube video for example](https://www.youtube.com/watch?v=UiiqAo1fONc)
+* Some information from [Youtube video for stripe](https://www.youtube.com/watch?v=oZwyA9lUwRk)
 
 - [GitHub](https://github.com/) for giving the idea of the project's design.
 - [Django](https://www.djangoproject.com/) for the framework.
@@ -250,7 +287,7 @@ Create a local copy of the GitHub repository by following one of the two process
 
 ### Media
 
-* Open sites and sources of images and emblems(Sorry, I forgot links these pictures;))
+* Open sites and sources of images and emblems(my own photos of my car)
 * Code institute for the deployment process
 * Translated with www.DeepL.com/Translator and Grammarly for Windows
 
