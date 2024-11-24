@@ -6,6 +6,7 @@ from django.contrib.auth import login
 from .forms import BookingForm, RequestToBuyForm
 from .models import Booking, RequestToBuy
 
+
 @login_required
 def create_booking_and_request(request):
     booking_form = BookingForm()
@@ -31,6 +32,7 @@ def create_booking_and_request(request):
         'request_form': request_form,
     })
 
+
 def report_view(request):
     bookings = Booking.objects.all()
     requests_to_buy = RequestToBuy.objects.all()
@@ -39,6 +41,7 @@ def report_view(request):
         'bookings': bookings,
         'requests_to_buy': requests_to_buy,
     })
+
 
 def login_or_register(request):
     if request.method == 'POST':
@@ -67,6 +70,7 @@ def login_or_register(request):
         'login_form': login_form,
         'register_form': register_form
     })
+
 
 def edit_record(request, model_name, record_id):
     model_map = {
