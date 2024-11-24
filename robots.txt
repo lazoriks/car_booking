@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /accounts/
+Disallow: /bag/
+Sitemap:  https://car-booking-toyota-11b6aa2e6f11.herokuapp.com/sitemap.xml
