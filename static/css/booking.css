@@ -52,6 +52,19 @@ form input, form button {
     border-radius: 4px;
 }
 
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input, select, textarea {
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+}
+
 form button {
     background-color: #333;
     color: #fff;

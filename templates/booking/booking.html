@@ -28,11 +28,32 @@
     <form method="POST">
         {% csrf_token %}
         <h2>Booking Form</h2>
-        {{ booking_form.as_p }}
+            {% for field in booking_form %}
+                <div>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endfor %}
 
-        <h2>Request to Buy Form</h2>
-        {{ request_form.as_p }}
-
+            <h2>Request to Buy Form</h2>
+            {% for field in request_form %}
+                <div>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endfor %}
         <button type="submit">Submit</button>
     </form>
 </body>

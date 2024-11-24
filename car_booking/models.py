@@ -17,7 +17,8 @@ class Product(models.Model):
         return f'Product: {self.engine}, {self.year}'
 
 class Subscription(models.Model):
-    email = models.EmailField(max_length=254, unique=True)
+    email = models.EmailField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.email

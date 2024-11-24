@@ -66,7 +66,7 @@ def subscribe(request):
         form = SubscriptionForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            Subscription.objects.get_or_create(email=email)
+            request.session['subscribed_email'] = email
             messages.success(request, 'You have successfully subscribed to the newsletter!')
             return redirect('index')
         else:

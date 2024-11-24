@@ -25,6 +25,20 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-8das6g&0%!qnbfhzn(y+8tj2bw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+
 ALLOWED_HOSTS = ['127.0.0.1','car-booking-toyota-11b6aa2e6f11.herokuapp.com', 'localhost']
 
 # Application definition

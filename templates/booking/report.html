@@ -7,11 +7,8 @@
     <title>Report</title>
     <style>
         body {
-            background-image: url("{% static 'images/hero-image.jpg' %}");
-            background-size: cover;
-            background-position: center; 
-            background-attachment: fixed; 
-            color: white;
+            background-color: white; 
+            color: black; 
         }
         h1, h2 {
             text-align: center;
@@ -29,8 +26,8 @@
             text-align: left;
         }
         th {
-            background-color: black; 
-            color: white;  
+            background-color: #f5f5f5; 
+            color: black; 
         }
         .content {
             padding: 20px;
@@ -65,20 +62,22 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Customer</th>
                     <th>Date</th>
-                    <th>Car Model</th>
-                    <th>Status</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
                 </tr>
             </thead>
             <tbody>
                 {% for booking in bookings %}
                 <tr>
                     <td>{{ booking.id }}</td>
-                    <td>{{ booking.customer }}</td>
                     <td>{{ booking.date }}</td>
-                    <td>{{ booking.car_model }}</td>
-                    <td>{{ booking.status }}</td>
+                    <td>{{ booking.name }}</td>
+                    <td>{{ booking.surname }}</td>
+                    <td>{{ booking.email }}</td>
+                    <td>{{ booking.mobile }}</td>
                     <td>
                         <a href="{% url 'edit_record' 'booking' booking.id %}">Edit</a>
                     </td>
@@ -96,20 +95,18 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Customer</th>
-                    <th>Requested Car</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
                     <th>Price</th>
-                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 {% for request in requests_to_buy %}
                 <tr>
                     <td>{{ request.id }}</td>
-                    <td>{{ request.customer }}</td>
-                    <td>{{ request.car_model }}</td>
+                    <td>{{ request.email }}</td>
+                    <td>{{ request.mobile }}</td>
                     <td>{{ request.price }}</td>
-                    <td>{{ request.status }}</td>
                     <td>
                         <a href="{% url 'edit_record' 'request_to_buy' request.id %}">Edit</a>
                     </td>
