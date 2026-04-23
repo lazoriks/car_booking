@@ -33,9 +33,12 @@ def create_booking_and_request(request):
     })
 
 
+@login_required
 def report_view(request):
-    bookings = Booking.objects.all()
-    requests_to_buy = RequestToBuy.objects.all()
+    # Fixed: added @login_required (was publicly accessible) and filter by
+    # current user so users only see their own records, not everyone else's.
+    bookings = Booking.objects.filter(user=request.user)
+    requests_to_buy = RequestToBuy.objects.filter(user=request.user)
 
     return render(request, 'booking/report.html', {
         'bookings': bookings,
@@ -52,13 +55,16 @@ def login_or_register(request):
             if login_form.is_valid():
                 user = login_form.get_user()
                 login(request, user)
-                return redirect('booking')
+                # Fixed: 'booking' was not a registered URL name; 'booking_view'
+                # is the correct name defined in test_drive/urls.py.
+                return redirect('booking_view')
 
         elif 'register' in request.POST:
             if register_form.is_valid():
                 user = register_form.save()
                 login(request, user)
-                return redirect('booking')
+                # Fixed: same URL name correction as above.
+                return redirect('booking_view')
             else:
                 messages.error(request, "Registration failed. Please correct the errors below.")
 
@@ -72,6 +78,7 @@ def login_or_register(request):
     })
 
 
+@login_required  # Fixed: was missing — unauthenticated users could edit any record
 def edit_record(request, model_name, record_id):
     model_map = {
         'booking': Booking,
@@ -84,6 +91,12 @@ def edit_record(request, model_name, record_id):
         return redirect('report')
 
     record = get_object_or_404(model, id=record_id)
+
+    # Fixed: ownership check — without this any logged-in user could edit
+    # any other user's record by guessing the record_id.
+    if record.user != request.user:
+        messages.error(request, "You do not have permission to edit this record.")
+        return redirect('report')
 
     form_map = {
         'booking': BookingForm,

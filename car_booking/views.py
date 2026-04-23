@@ -6,8 +6,6 @@ from django.contrib import messages
 
 from django.http import HttpResponseNotFound
 from django.template import loader
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
 from car_booking.forms import SubscriptionForm
 from car_booking.models import Subscription
 
@@ -54,33 +52,18 @@ def index(request):
     return render(request, 'home/index.html')
 
 
-def booking(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('booking')
-    else:
-        form = AuthenticationForm()
-
-    return render(request, 'booking/booking.html', {'form': form})
-
-
 def subscribe(request):
     if request.method == 'POST':
         form = SubscriptionForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            request.session['subscribed_email'] = email
-            messages.success(request, f'''
-You have successfully subscribed to the newsletter!
-''')
+            # Fixed: actually persist the subscription; get_or_create avoids
+            # IntegrityError if the unique email is submitted twice.
+            Subscription.objects.get_or_create(email=email)
+            messages.success(request, 'You have successfully subscribed to the newsletter!')
             return redirect('index')
         else:
-            messages.error(request, f'''
-There was an error with your subscription.
-''')
+            messages.error(request, 'There was an error with your subscription.')
     else:
         form = SubscriptionForm()
 
